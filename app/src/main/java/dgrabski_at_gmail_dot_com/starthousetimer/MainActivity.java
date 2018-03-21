@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     // ToDo: complete timerSetup.setOnClickListener
     // ToDo: clean up all old buttons and references
     // ToDo: add entry for light pattern selection
+    // ToDo: lock to portrait mode
 
     public static final String START_SECONDS = "dgrabski_at_gmail_dot_com.STARTSECONDS";
     TextView textView;

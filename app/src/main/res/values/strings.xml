@@ -3,4 +3,8 @@
     <string name="int_startSeconds">10</string>
     <string name="str_hint_startSeconds">Countdown time</string>
     <string name="str_buttonBegin">SET UP TIMER</string>
+    <string name="txt_btn_start">START</string>
+    <string name="txt_btn_stop">STOP</string>
+    <string name="txt_btn_reset">RESET</string>
+    <string name="txt_btn_lap">LAP</string>
 </resources>
