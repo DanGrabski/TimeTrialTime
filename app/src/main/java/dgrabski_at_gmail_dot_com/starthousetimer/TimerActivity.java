@@ -86,7 +86,7 @@ public class TimerActivity extends AppCompatActivity {
                 //TimeBuff += MillisecondTime;
                 handler.removeCallbacks(runnable);
                 reset.setEnabled(true);
-                start.setEnabled(true);
+                //start.setEnabled(true);
             }
         });
 
@@ -104,6 +104,7 @@ public class TimerActivity extends AppCompatActivity {
                 timeView.setText(getString(R.string.str_timedefault));
                 lapArrayList.clear();
                 adapter.notifyDataSetChanged();
+                start.setEnabled(true);
             }
         });
 

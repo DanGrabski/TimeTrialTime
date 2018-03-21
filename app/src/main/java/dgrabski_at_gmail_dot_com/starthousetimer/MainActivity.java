@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         String startTime = countdownTime.getText().toString();
         try {
             startSeconds = Integer.parseInt(startTime);
+            // ok so not the best way of handling out of range
+            // ToDo: handle out of range better instead of quietly ignoring
             startSeconds = (startSeconds < 0) || (startSeconds > MAX_COUNTDOWN) ? 0 : startSeconds;
         }
         catch (NumberFormatException e) {
