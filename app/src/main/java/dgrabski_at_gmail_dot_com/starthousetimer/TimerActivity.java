@@ -1,5 +1,6 @@
 package dgrabski_at_gmail_dot_com.starthousetimer;
 
+import android.content.Intent;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -17,10 +18,10 @@ import java.util.Locale;
 
 public class TimerActivity extends AppCompatActivity {
 
-    // done: Add basic stopwatch functionality (moved over from MainActivity)
-    // ToDo: Configure output for stopwatch/lap display - create text outputs
-    // ToDo: Configure input for stopwatch/lap display - create buttons
-    // ToDo: clean up positioning of controls to fit different sizes
+    // done v0.01: Add basic stopwatch functionality (moved over from MainActivity)
+    // done v0.01: Configure output for stopwatch/lap display - create text outputs
+    // done v0.01: Configure input for stopwatch/lap display - create buttons
+    // done v0.01: clean up positioning of controls to fit different sizes
     // ToDo: lock to portrait mode
     // ToDo: Add countdown timer before starting stopwatch
     // ToDo: Add visual countdown (display of time remaining)
@@ -29,7 +30,8 @@ public class TimerActivity extends AppCompatActivity {
     // ToDo: Add beeps to countdown timer
     // ToDo: add different light patterns
 
-    int startTime;
+    int countdownTime;
+    String countdownString;
     int tmr_ms, tmr_sec, tmr_min;
     long time_ms, time_start, time_buff, time_update = 0L;  // time_buff: buffer time for pause
 
@@ -41,15 +43,21 @@ public class TimerActivity extends AppCompatActivity {
     TextView countdownView, timeView;
     Button start, stop, reset, lap;
     Handler handler;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
+        intent = getIntent();
+        countdownTime = intent.getIntExtra(MainActivity.START_SECONDS, 0);
 
         countdownView = findViewById(R.id.txt_countdown);
         timeView = findViewById(R.id.txt_time);
         lapView = findViewById(R.id.list_laps);
+
+        // preload the countdown time
+        countdownView.setText(String.format(Locale.US, "%d", countdownTime));
 
         start = findViewById(R.id.btn_start);
         stop = findViewById(R.id.btn_stop);
