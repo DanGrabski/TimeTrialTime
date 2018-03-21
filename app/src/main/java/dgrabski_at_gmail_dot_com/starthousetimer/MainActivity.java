@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
 
     // ToDo: Move timer into new activity (name activity_timer)
     // ToDo: add entry for countdown time
+    // ToDo: pass countdown time to TimerActivity
     // ToDo: come up with settings
     // ToDo: complete timerSetup.setOnClickListener
     // ToDo: clean up all old buttons and references
