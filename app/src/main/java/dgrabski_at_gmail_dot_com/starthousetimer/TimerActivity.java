@@ -13,6 +13,7 @@ import android.os.Handler;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 public class TimerActivity extends AppCompatActivity {
 
@@ -30,7 +31,6 @@ public class TimerActivity extends AppCompatActivity {
 
     int startTime;
     int tmr_ms, tmr_sec, tmr_min;
-    //long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L;
     long time_ms, time_start, time_buff, time_update = 0L;  // time_buff: buffer time for pause
 
     List<String> lapArrayList;
@@ -68,9 +68,44 @@ public class TimerActivity extends AppCompatActivity {
                 time_start = SystemClock.uptimeMillis();
                 handler.postDelayed(runnable, 0);
                 reset.setEnabled(false);
+                start.setEnabled(false);
             }
         });
 
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TimeBuff += MillisecondTime;
+                handler.removeCallbacks(runnable);
+                reset.setEnabled(true);
+                start.setEnabled(true);
+            }
+        });
+
+        reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                time_ms = 0L;
+                time_start = 0L;
+                time_buff = 0L;
+                time_update = 0L;
+                tmr_sec = 0;
+                tmr_min = 0;
+                tmr_ms = 0;
+
+                timeView.setText(getString(R.string.str_timedefault));
+                lapArrayList.clear();
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        lap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                lapArrayList.add(timeView.getText().toString());
+                adapter.notifyDataSetChanged();
+            }
+        });
     }
 
 
@@ -84,11 +119,10 @@ public class TimerActivity extends AppCompatActivity {
             time_update = time_buff + time_ms;
             tmr_sec = (int) (time_update / 1000);
             tmr_min = tmr_sec / 60;
-            tmr_min = tmr_sec % 60;
+            tmr_sec = tmr_sec % 60;
             tmr_ms = (int) (time_update % 1000);
-            timeView.setText("" + tmr_min + ":"
-                    + String.format("%02d", tmr_sec) + ":"
-                    + String.format("%03d", tmr_ms));
+            timeView.setText("" + tmr_min + ":" + String.format("%02d", tmr_sec) + ":" + String.format("%03d", tmr_ms));
+            //timeView.setText(String.format(Locale.US, "%02d:%02d.%03d", tmr_min, tmr_sec, tmr_ms));
             handler.postDelayed(this, 0);
         }
 

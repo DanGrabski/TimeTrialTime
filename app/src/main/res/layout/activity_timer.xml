@@ -55,7 +55,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="00:00:00.000"
+        android:text="@string/str_timedefault"
         android:textColor="#009688"
         android:textSize="50dp"
         android:textStyle="bold"

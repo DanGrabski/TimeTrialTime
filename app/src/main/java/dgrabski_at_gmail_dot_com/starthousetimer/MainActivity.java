@@ -2,14 +2,12 @@ package dgrabski_at_gmail_dot_com.starthousetimer;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.os.Handler;
 import java.util.Arrays;
 import java.util.List;
@@ -28,15 +26,12 @@ public class MainActivity extends AppCompatActivity {
     // ToDo: lock to portrait mode
 
     public static final String START_SECONDS = "dgrabski_at_gmail_dot_com.STARTSECONDS";
-    TextView textView;
-    Button start, pause, reset, lap;
-    long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L;
+
     Handler handler;
-    int Seconds, Minutes, MilliSeconds;
-    ListView listView;
-    String[] ListElements = new String[] {  };
-    List<String> ListElementsArrayList;
-    ArrayAdapter<String> adapter;
+//    ListView listView;
+//    String[] ListElements = new String[] {  };
+//    List<String> ListElementsArrayList;
+//    ArrayAdapter<String> adapter;
 
     Button timerSetup;
 
@@ -46,67 +41,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         timerSetup = findViewById(R.id.buttonSetupTimer);
-
-        textView = findViewById(R.id.textView);
-        start = findViewById(R.id.buttonSetupTimer);
-        pause = findViewById(R.id.button2);
-        reset = findViewById(R.id.button3);
-        lap = findViewById(R.id.button4);
-        listView = findViewById(R.id.listview1);
         handler = new Handler();
-        ListElementsArrayList = new ArrayList<>(Arrays.asList(ListElements));
-        adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, ListElementsArrayList);
-        listView.setAdapter(adapter);
+//        ListElementsArrayList = new ArrayList<>(Arrays.asList(ListElements));
+//        adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, ListElementsArrayList);
+//        listView.setAdapter(adapter);
 
         timerSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 setupTimer(view);   // sends us to TimerActivity
-            }
-        });
-
-        start.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                StartTime = SystemClock.uptimeMillis();
-                handler.postDelayed(runnable, 0);
-                reset.setEnabled(false);
-            }
-        });
-
-        // handlers for removed buttons
-        pause.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                TimeBuff += MillisecondTime;
-                handler.removeCallbacks(runnable);
-                reset.setEnabled(true);
-            }
-        });
-
-        reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                MillisecondTime = 0L;
-                StartTime = 0L;
-                TimeBuff = 0L;
-                UpdateTime = 0L;
-                Seconds = 0;
-                Minutes = 0;
-                MilliSeconds = 0;
-
-                textView.setText("00:00:00");
-                ListElementsArrayList.clear();
-                adapter.notifyDataSetChanged();
-            }
-        });
-
-        lap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ListElementsArrayList.add(textView.getText().toString());
-                adapter.notifyDataSetChanged();
             }
         });
 
@@ -120,11 +63,13 @@ public class MainActivity extends AppCompatActivity {
 
         // starting with just the countdown time
         // ToDo: make sure we're passing countdown time correctly
+        // ToDo: error checking on input_startSeconds - could be blank, which crashes things
         Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
-        EditText editText = findViewById(R.id.input_startSeconds);        // entry for time on countdown
-        String startTime = editText.getText().toString();
-        int startSeconds = Integer.valueOf(startTime);
-        intent.putExtra(START_SECONDS, startSeconds);
+//        EditText editText = findViewById(R.id.input_startSeconds);        // entry for time on countdown
+//        String startTime = editText.getText().toString();
+//        int startSeconds = Integer.valueOf(startTime);
+//        intent.putExtra(START_SECONDS, startSeconds);
+        intent.putExtra(START_SECONDS, 10);     // ToDo: THIS IS FOR DEBUG/TEST ONLY
         startActivity(intent);
     }
 
