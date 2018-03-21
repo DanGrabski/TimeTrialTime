@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    // ToDo: Move timer into new activity (name tbd)
+    // ToDo: Move timer into new activity (name activity_timer)
     // ToDo: add entry for countdown time
     // ToDo: come up with settings
 
-    public static final String START_TIME = "dgrabski_at_gmail_dot_com.STARTTIME";
+    public static final String START_SECONDS = "dgrabski_at_gmail_dot_com.STARTSECONDS";
     TextView textView;
     Button start, pause, reset, lap;
     long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L;
@@ -111,10 +111,11 @@ public class MainActivity extends AppCompatActivity {
         // and generates the activity to start the countdown and timing
         // (doesn't start until the user presses Start on the new
         // activity)
-        Intent intent = new Intent(this, DisplayMessageActivity.class); // Display Me... -> new activity name
+        Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
         EditText editText = findViewById(R.id.editText);        // entry for time on countdown
-        String message = editText.getText().toString();
-        intent.putExtra(START_TIME, message);
+        String startTime = editText.getText().toString();
+        int startSeconds = Integer.valueOf(startTime);
+        intent.putExtra(START_SECONDS, startSeconds);
         startActivity(intent);
     }
 
