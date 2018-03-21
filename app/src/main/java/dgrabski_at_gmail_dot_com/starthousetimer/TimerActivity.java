@@ -121,8 +121,7 @@ public class TimerActivity extends AppCompatActivity {
             tmr_min = tmr_sec / 60;
             tmr_sec = tmr_sec % 60;
             tmr_ms = (int) (time_update % 1000);
-            timeView.setText("" + tmr_min + ":" + String.format("%02d", tmr_sec) + ":" + String.format("%03d", tmr_ms));
-            //timeView.setText(String.format(Locale.US, "%02d:%02d.%03d", tmr_min, tmr_sec, tmr_ms));
+            timeView.setText(String.format(Locale.US, "%02d:%02d.%03d", tmr_min, tmr_sec, tmr_ms));
             handler.postDelayed(this, 0);
         }
 
