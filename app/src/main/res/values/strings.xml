@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">StartHouseTimer</string>
+    <string name="int_startSeconds">10</string>
+    <string name="str_hint_startSeconds">Countdown time</string>
+    <string name="str_buttonBegin">SET UP TIMER</string>
 </resources>

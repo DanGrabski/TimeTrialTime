@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     // ToDo: Move timer into new activity (name activity_timer)
     // ToDo: add entry for countdown time
     // ToDo: come up with settings
+    // ToDo: complete timerSetup.setOnClickListener
+    // ToDo: clean up all old buttons and references
 
     public static final String START_SECONDS = "dgrabski_at_gmail_dot_com.STARTSECONDS";
     TextView textView;
@@ -32,13 +34,17 @@ public class MainActivity extends AppCompatActivity {
     List<String> ListElementsArrayList;
     ArrayAdapter<String> adapter;
 
+    Button timerSetup;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        timerSetup = findViewById(R.id.buttonSetupTimer);
+
         textView = findViewById(R.id.textView);
-        start = findViewById(R.id.button);
+        start = findViewById(R.id.buttonSetupTimer);
         pause = findViewById(R.id.button2);
         reset = findViewById(R.id.button3);
         lap = findViewById(R.id.button4);
@@ -48,28 +54,28 @@ public class MainActivity extends AppCompatActivity {
         adapter = new ArrayAdapter<>(MainActivity.this, android.R.layout.simple_list_item_1, ListElementsArrayList);
         listView.setAdapter(adapter);
 
+        timerSetup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+             // add in moving to the other activity here
+            }
+        });
+
         start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 StartTime = SystemClock.uptimeMillis();
                 handler.postDelayed(runnable, 0);
-
                 reset.setEnabled(false);
-
             }
         });
 
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 TimeBuff += MillisecondTime;
-
                 handler.removeCallbacks(runnable);
-
                 reset.setEnabled(true);
-
             }
         });
 
@@ -86,9 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 MilliSeconds = 0;
 
                 textView.setText("00:00:00");
-
                 ListElementsArrayList.clear();
-
                 adapter.notifyDataSetChanged();
             }
         });
@@ -96,11 +100,8 @@ public class MainActivity extends AppCompatActivity {
         lap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 ListElementsArrayList.add(textView.getText().toString());
-
                 adapter.notifyDataSetChanged();
-
             }
         });
 
@@ -111,8 +112,10 @@ public class MainActivity extends AppCompatActivity {
         // and generates the activity to start the countdown and timing
         // (doesn't start until the user presses Start on the new
         // activity)
+
+        // starting with just the countdown time
         Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
-        EditText editText = findViewById(R.id.editText);        // entry for time on countdown
+        EditText editText = findViewById(R.id.input_startSeconds);        // entry for time on countdown
         String startTime = editText.getText().toString();
         int startSeconds = Integer.valueOf(startTime);
         intent.putExtra(START_SECONDS, startSeconds);
