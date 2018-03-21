@@ -18,6 +18,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     // ToDo: Move timer into new activity (name activity_timer)
+    // ToDo: basic functionality to just jump to Timer activity
     // ToDo: add entry for countdown time
     // ToDo: pass countdown time to TimerActivity
     // ToDo: come up with settings
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
         // activity)
 
         // starting with just the countdown time
+        // ToDo: make sure we're passing countdown time correctly
         Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
         EditText editText = findViewById(R.id.input_startSeconds);        // entry for time on countdown
         String startTime = editText.getText().toString();
@@ -126,22 +128,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public Runnable runnable = new Runnable() {
 
-        public void run() {
-
-            MillisecondTime = SystemClock.uptimeMillis() - StartTime;
-            UpdateTime = TimeBuff + MillisecondTime;
-            Seconds = (int) (UpdateTime / 1000);
-            Minutes = Seconds / 60;
-            Seconds = Seconds % 60;
-            MilliSeconds = (int) (UpdateTime % 1000);
-            textView.setText("" + Minutes + ":"
-                    + String.format("%02d", Seconds) + ":"
-                    + String.format("%03d", MilliSeconds));
-            handler.postDelayed(this, 0);
-        }
-
-    };
 
 }
