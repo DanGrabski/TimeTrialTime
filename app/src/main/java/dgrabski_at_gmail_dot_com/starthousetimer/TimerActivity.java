@@ -24,16 +24,15 @@ public class TimerActivity extends AppCompatActivity {
     // done v0.01: Configure input for stopwatch/lap display - create buttons
     // done v0.01: clean up positioning of controls to fit different sizes
     // ToDo: lock to portrait mode
-    // ToDo: Add countdown timer before starting stopwatch
-    // ToDo: Add visual countdown (display of time remaining)
-    // ToDo: round (up) countdown time remaining to nearest second
+    // done v0.02: Add countdown timer before starting stopwatch
+    // done v0.02: Add visual countdown (display of time remaining)
+    // done v0.02: round (up) countdown time remaining to nearest second
     // ToDo: Add red light/green light to countdown
     // ToDo: Add beeps to countdown timer
     // ToDo: add different light patterns
 
     int countdownTime;
     int countdownRemain;
-    String countdownRemainString;
     int tmr_ms, tmr_sec, tmr_min;
     long time_ms, time_start, countdown_start, time_buff, time_update = 0L;  // time_buff: buffer time for pause
 
@@ -78,7 +77,7 @@ public class TimerActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-
+                countdownView.setText("0");
             }
         };
 
@@ -108,7 +107,8 @@ public class TimerActivity extends AppCompatActivity {
                 //handler.removeCallbacks(timer_countdown);
                 handler.removeCallbacks(timer_stopwatch);
                 cdt_start.cancel();
-                // ToDo: reset countdown display time
+                // done: reset countdown display time
+                countdownView.setText(String.format(Locale.US, "%d", countdownTime));
                 reset.setEnabled(true);
                 //start.setEnabled(true);
             }
@@ -140,22 +140,6 @@ public class TimerActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
-
-//    public Runnable timer_countdown = new Runnable() {
-//        public void run() {
-//            time_cd_ms = SystemClock.uptimeMillis() - countdown_start;
-//            //time_update = time_buff + time_ms;
-//            tmr_cd_sec = (int) (time_ms / 1000);
-//            tmr_min = tmr_sec / 60;
-//            tmr_sec = tmr_sec % 60;
-//            tmr_ms = (int) (time_ms % 1000);
-//            countdownView.setText(String.format(Locale.US, "%d", tmr_cd_sec));
-//            handler.postDelayed(this, 0);
-//        }
-//    };
 
     public Runnable timer_stopwatch = new Runnable() {
         public void run() {

@@ -14,10 +14,10 @@ public class MainActivity extends AppCompatActivity {
     // done v0.01: Move timer into new activity (name activity_timer)
     // done v0.01: basic functionality to just jump to Timer activity
     // done v0.01: add entry for countdown time
-    // ToDo: pass countdown time to TimerActivity
+    // done v0.02: pass countdown time to TimerActivity
     // ToDo: come up with settings
-    // ToDo: complete timerSetup.setOnClickListener
-    // ToDo: clean up all old buttons and references
+    // ToDo: complete timerSetup.setOnClickListener - do we need additional info?
+    // done v0.02: clean up all old buttons and references
     // ToDo: add entry for light pattern selection
     // ToDo: lock to portrait mode
     // ToDo: create user error for invalid entry on countdown time
@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         // activity)
 
         // starting with just the countdown time
-        // ToDo: make sure we're passing countdown time correctly
-        // ToDo: error checking on input_startSeconds - could be blank, which crashes things
+        // done v0.02: make sure we're passing countdown time correctly
+        // done v0.02: error checking on input_startSeconds - could be blank, which crashes things
         Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
         EditText countdownTime = findViewById(R.id.input_startSeconds);        // entry for time on countdown
         String startTime = countdownTime.getText().toString();
@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
         finally {
             intent.putExtra(START_SECONDS, startSeconds);
         }
-//        intent.putExtra(START_SECONDS, 10);     // ToDo: THIS IS FOR DEBUG/TEST ONLY
         startActivity(intent);
     }
 
