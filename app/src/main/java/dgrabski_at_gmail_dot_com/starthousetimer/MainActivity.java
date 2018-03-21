@@ -1,11 +1,13 @@
 package dgrabski_at_gmail_dot_com.starthousetimer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.os.Handler;
@@ -15,6 +17,11 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    // ToDo: Move timer into new activity (name tbd)
+    // ToDo: add entry for countdown time
+    // ToDo: come up with settings
+
+    public static final String START_TIME = "dgrabski_at_gmail_dot_com.STARTTIME";
     TextView textView;
     Button start, pause, reset, lap;
     long MillisecondTime, StartTime, TimeBuff, UpdateTime = 0L;
@@ -97,6 +104,18 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void setupTimer(View view) {
+        // takes the amount of countdown time, and the countdown type,
+        // and generates the activity to start the countdown and timing
+        // (doesn't start until the user presses Start on the new
+        // activity)
+        Intent intent = new Intent(this, DisplayMessageActivity.class); // Display Me... -> new activity name
+        EditText editText = findViewById(R.id.editText);        // entry for time on countdown
+        String message = editText.getText().toString();
+        intent.putExtra(START_TIME, message);
+        startActivity(intent);
     }
 
     public Runnable runnable = new Runnable() {
