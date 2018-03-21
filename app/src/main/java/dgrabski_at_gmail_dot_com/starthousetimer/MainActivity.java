@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         timerSetup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             // add in moving to the other activity here
+                setupTimer(view);   // sends us to TimerActivity
             }
         });
 
@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // handlers for removed buttons
         pause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
