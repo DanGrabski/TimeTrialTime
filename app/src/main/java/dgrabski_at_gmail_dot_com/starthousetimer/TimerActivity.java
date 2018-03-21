@@ -17,7 +17,7 @@ import java.util.Locale;
 
 public class TimerActivity extends AppCompatActivity {
 
-    // ToDo: Add basic stopwatch functionality (moved over from MainActivity)
+    // done: Add basic stopwatch functionality (moved over from MainActivity)
     // ToDo: Configure output for stopwatch/lap display - create text outputs
     // ToDo: Configure input for stopwatch/lap display - create buttons
     // ToDo: clean up positioning of controls to fit different sizes
