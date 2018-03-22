@@ -8,7 +8,6 @@ import android.media.AudioTrack;
  * Created by Dan on 3/22/2018.
  */
 
-//class PlayTone extends Activity {
 class PlayTone {
 
     PlayTone(BeepTone beepTone) {

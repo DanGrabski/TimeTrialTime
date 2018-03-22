@@ -14,13 +14,13 @@ class BeepHandler {
         beepMap.put(second, _beepTone);
     }
 
-    byte[] returnBeep (int seconds) {
+    BeepTone returnBeep (int seconds) {
         // search for beeps at this second value
         BeepTone _possibleBeep = beepMap.get(seconds);
         if (_possibleBeep == null) {
             return null;
         } else {
-            return _possibleBeep.getSound();
+            return _possibleBeep;
         }
     }
 }

@@ -93,7 +93,10 @@ public class TimerActivity extends AppCompatActivity {
                 countdownRemain = (int)Math.ceil(millisUntilFinished / 1000.0);
                 countdownView.setText(String.format(Locale.US, "%d", countdownRemain));
                 // ToDo: fire beeps on integral-second intervals
-                beepHandler.returnBeep(countdownRemain);
+                BeepTone _sound = beepHandler.returnBeep(countdownRemain);
+                if (_sound != null) {
+                    PlayTone _playTone = new PlayTone(_sound);
+                }
             }
 
             @Override
