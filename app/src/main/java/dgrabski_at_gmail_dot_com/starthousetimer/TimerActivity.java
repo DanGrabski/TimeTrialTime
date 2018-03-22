@@ -49,6 +49,7 @@ public class TimerActivity extends AppCompatActivity {
     Button start, stop, reset, lap;
     Handler handler;
     Intent intent;
+    BeepHandler beepHandler;
 
     CountDownTimer cdt_start;
 
@@ -69,6 +70,18 @@ public class TimerActivity extends AppCompatActivity {
         countdownView.setBackgroundColor(countdownColors(countdownTime)[0]);
         countdownView.setTextColor(countdownColors(countdownTime)[1]);
 
+        BeepTone lowShortBeep = new BeepTone(100,440);
+        BeepTone lowLongBeep = new BeepTone(500, 440);
+        BeepTone highLongBeep = new BeepTone(500, 880);
+        // ToDo: replace with beep configuration from settings
+        beepHandler.addBeep(10, lowLongBeep);
+        beepHandler.addBeep(5, lowShortBeep);
+        beepHandler.addBeep(4, lowShortBeep);
+        beepHandler.addBeep(3, lowShortBeep);
+        beepHandler.addBeep(2, lowShortBeep);
+        beepHandler.addBeep(1, lowShortBeep);
+        beepHandler.addBeep(0, highLongBeep);
+
         start = findViewById(R.id.btn_start);
         stop = findViewById(R.id.btn_stop);
         reset = findViewById(R.id.btn_reset);
@@ -80,6 +93,7 @@ public class TimerActivity extends AppCompatActivity {
                 countdownRemain = (int)Math.ceil(millisUntilFinished / 1000.0);
                 countdownView.setText(String.format(Locale.US, "%d", countdownRemain));
                 // ToDo: fire beeps on integral-second intervals
+                beepHandler.returnBeep(countdownRemain);
             }
 
             @Override
