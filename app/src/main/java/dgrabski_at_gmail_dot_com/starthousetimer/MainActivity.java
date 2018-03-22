@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     // ToDo: complete timerSetup.setOnClickListener - do we need additional info?
     // done v0.02: clean up all old buttons and references
     // ToDo: add entry for light pattern selection
-    // ToDo: lock to portrait mode
+    // done v0.03: lock to portrait mode
     // ToDo: create user error for invalid entry on countdown time
 
     public static final String START_SECONDS = "dgrabski_at_gmail_dot_com.STARTSECONDS";

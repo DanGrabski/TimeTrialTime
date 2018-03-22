@@ -26,13 +26,14 @@ public class TimerActivity extends AppCompatActivity {
     // done v0.01: Configure output for stopwatch/lap display - create text outputs
     // done v0.01: Configure input for stopwatch/lap display - create buttons
     // done v0.01: clean up positioning of controls to fit different sizes
-    // ToDo: lock to portrait mode
+    // done v0.03: lock to portrait mode
     // done v0.02: Add countdown timer before starting stopwatch
     // done v0.02: Add visual countdown (display of time remaining)
     // done v0.02: round (up) countdown time remaining to nearest second
     // ToDo: Add red light/green light to countdown
     // ToDo: Add beeps to countdown timer
     // ToDo: add different light patterns
+    // ToDo: pass textview object to function to adjust colors instead of the current way
 
     int countdownTime;
     int countdownRemain;
@@ -65,7 +66,8 @@ public class TimerActivity extends AppCompatActivity {
         // preload the countdown time
         countdownView.setText(String.format(Locale.US, "%d", countdownTime));
         // set the countdown initial color
-        countdownView.setBackgroundColor(countdownBackground(countdownTime));
+        countdownView.setBackgroundColor(countdownColors(countdownTime)[0]);
+        countdownView.setTextColor(countdownColors(countdownTime)[1]);
 
         start = findViewById(R.id.btn_start);
         stop = findViewById(R.id.btn_stop);
@@ -156,7 +158,8 @@ public class TimerActivity extends AppCompatActivity {
                 // update background color as needed
                 String _s = charSequence.toString();
                 int _val = Integer.parseInt(_s);
-                countdownView.setBackgroundColor(countdownBackground(_val));
+                countdownView.setBackgroundColor(countdownColors(_val)[0]);
+                countdownView.setTextColor(countdownColors(_val)[1]);
             }
 
             @Override
@@ -180,14 +183,21 @@ public class TimerActivity extends AppCompatActivity {
         }
     };
 
-    private int countdownBackground(int timeRemain) {
+    private int[] countdownColors(int timeRemain) {
         // returns the required color for the current time remaining
+        int _backColor;
+        int _foreColor;
         if (timeRemain == 0) {
-            return Color.GREEN;
+            _backColor = Color.GREEN;
+            _foreColor = Color.BLACK;
         } else if (timeRemain <= 5) {
-            return Color.YELLOW;
+            _backColor = Color.YELLOW;
+            _foreColor = Color.BLACK;
         } else {
-            return Color.RED;
+            _backColor = Color.RED;
+            _foreColor = Color.WHITE;
         }
+        int _retarray[] = {_backColor, _foreColor};
+        return _retarray;
     }
 }
