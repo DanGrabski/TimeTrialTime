@@ -1,10 +1,13 @@
 package dgrabski_at_gmail_dot_com.starthousetimer;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -61,6 +64,8 @@ public class TimerActivity extends AppCompatActivity {
 
         // preload the countdown time
         countdownView.setText(String.format(Locale.US, "%d", countdownTime));
+        // set the countdown initial color
+        countdownView.setBackgroundColor(countdownBackground(countdownTime));
 
         start = findViewById(R.id.btn_start);
         stop = findViewById(R.id.btn_stop);
@@ -139,6 +144,27 @@ public class TimerActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
             }
         });
+
+        countdownView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // update background color as needed
+                String _s = charSequence.toString();
+                int _val = Integer.parseInt(_s);
+                countdownView.setBackgroundColor(countdownBackground(_val));
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
     }
 
     public Runnable timer_stopwatch = new Runnable() {
@@ -153,4 +179,15 @@ public class TimerActivity extends AppCompatActivity {
             handler.postDelayed(this, 0);
         }
     };
+
+    private int countdownBackground(int timeRemain) {
+        // returns the required color for the current time remaining
+        if (timeRemain == 0) {
+            return Color.GREEN;
+        } else if (timeRemain <= 5) {
+            return Color.YELLOW;
+        } else {
+            return Color.RED;
+        }
+    }
 }
