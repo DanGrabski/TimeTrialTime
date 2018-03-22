@@ -13,7 +13,7 @@ class BeepTone {
     private int sampleRate = 8000;
 
 
-    public BeepTone(int duration, int frequency) {
+    BeepTone(int duration, int frequency) {
         int numSamples = duration * sampleRate;
         sample = Arrays.copyOf(sample, numSamples);
         sound = Arrays.copyOf(sound, 2*numSamples);

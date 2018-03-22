@@ -1,11 +1,6 @@
 package dgrabski_at_gmail_dot_com.starthousetimer;
 
-import android.os.Handler;
 import android.util.SparseArray;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by Dan on 3/22/2018.
