@@ -1,6 +1,10 @@
 package dgrabski_at_gmail_dot_com.starthousetimer;
 
+import android.util.SparseArray;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Dan on 3/22/2018.
@@ -8,25 +12,19 @@ import java.util.ArrayList;
 
 class BeepHandler {
 
-    private ArrayList<ArrayList<Integer>> beepArray = new ArrayList<>();
+    private SparseArray<BeepTone> beepMap = new SparseArray<>();
 
-
-    int addBeep(int second, int duration, int frequency) {
-        ArrayList<Integer> _add = new ArrayList<>();
-        try {
-            _add.add(second);       // adds the second to make the beep
-            _add.add(duration);     // duration of beep in ms
-            _add.add(frequency);    // frequency of beep in Hz
-        } catch (Exception e) {
-            return -1;
-        }
-
-        beepArray.add(_add);
-        return 0;
+    void addBeep(int second, BeepTone _beepTone) {
+        beepMap.put(second, _beepTone);
     }
 
     byte[] returnBeep (int seconds) {
         // search for beeps at this second value
-
+        BeepTone _possibleBeep = beepMap.get(seconds);
+        if (_possibleBeep == null) {
+            return null;
+        } else {
+            return _possibleBeep.getSound();
+        }
     }
 }
