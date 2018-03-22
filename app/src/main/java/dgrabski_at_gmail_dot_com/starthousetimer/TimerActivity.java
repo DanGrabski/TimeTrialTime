@@ -200,4 +200,6 @@ public class TimerActivity extends AppCompatActivity {
         int _retarray[] = {_backColor, _foreColor};
         return _retarray;
     }
+
+
 }
