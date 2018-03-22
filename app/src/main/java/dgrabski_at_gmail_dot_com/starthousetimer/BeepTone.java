@@ -6,7 +6,7 @@ import java.util.Arrays;
  * Created by Dan on 3/22/2018.
  */
 
-public class BeepTone {
+class BeepTone {
 
     private double[] sample;
     private byte[] sound;

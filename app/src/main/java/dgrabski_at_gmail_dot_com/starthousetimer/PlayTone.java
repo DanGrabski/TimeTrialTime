@@ -5,17 +5,12 @@ import android.media.AudioFormat;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 import android.os.Bundle;
-import android.os.Handler;
 
 /**
  * Created by Dan on 3/22/2018.
  */
 
 class PlayTone extends Activity {
-
-
-
-    Handler handler = new Handler();
 
     //@Override
     public void onCreate(Bundle savedInstanceState, BeepTone beepTone) {
