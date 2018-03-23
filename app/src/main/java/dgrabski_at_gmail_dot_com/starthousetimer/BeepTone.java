@@ -8,15 +8,14 @@ import java.util.Arrays;
 
 class BeepTone {
 
-    private double[] sample;
-    private byte[] sound;
     private int sampleRate = 8000;
+    private byte[] sound;
 
 
     BeepTone(int duration, int frequency) {
         int numSamples = duration * sampleRate;
-        sample = Arrays.copyOf(sample, numSamples);
-        sound = Arrays.copyOf(sound, 2*numSamples);
+        double[] sample = new double[numSamples];
+        sound = new byte[2*numSamples];
 
         // fill out the array
         for (int i = 0; i < numSamples; ++i) {
