@@ -8,11 +8,11 @@ import java.util.Arrays;
 
 class BeepTone {
 
-    private int sampleRate = 8000;
+    //private int sampleRate = 8000;
     private byte[] sound;
 
 
-    BeepTone(int duration, int frequency) {
+    BeepTone(int duration, int frequency, int sampleRate) {
         int numSamples = duration * sampleRate;
         double[] sample = new double[numSamples];
         sound = new byte[2*numSamples];
@@ -37,8 +37,8 @@ class BeepTone {
     byte[] getSound() {
         return sound;
     }
-    int getSampleRate() {
-        return sampleRate;
-    }
+//    int getSampleRate() {
+//        return sampleRate;
+//    }
 
 }

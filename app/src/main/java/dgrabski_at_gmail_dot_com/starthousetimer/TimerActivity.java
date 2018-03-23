@@ -2,6 +2,9 @@ package dgrabski_at_gmail_dot_com.starthousetimer;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.AudioFormat;
+import android.media.AudioManager;
+import android.media.AudioTrack;
 import android.os.CountDownTimer;
 import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
@@ -50,8 +53,11 @@ public class TimerActivity extends AppCompatActivity {
     Handler handler;
     Intent intent;
     BeepHandler beepHandler;
+    AudioTrack audioTrack;
 
     CountDownTimer cdt_start;
+
+    static final int sampleRate = 8000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +76,28 @@ public class TimerActivity extends AppCompatActivity {
         countdownView.setBackgroundColor(countdownColors(countdownTime)[0]);
         countdownView.setTextColor(countdownColors(countdownTime)[1]);
 
-        BeepTone lowShortBeep = new BeepTone(100,440);
-        BeepTone lowLongBeep = new BeepTone(500, 440);
-        BeepTone highLongBeep = new BeepTone(500, 880);
+        final BeepTone lowShortBeep = new BeepTone(100,440, sampleRate);
+        BeepTone lowLongBeep = new BeepTone(500, 440, sampleRate);
+        BeepTone highLongBeep = new BeepTone(500, 880, sampleRate);
         beepHandler = new BeepHandler();
-        
+//        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+//                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
+//                AudioFormat.ENCODING_PCM_16BIT, sound.length,
+//                AudioTrack.MODE_STATIC);
+        // ToDo: THIS IS DEBUG ONLY
+        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
+                AudioFormat.ENCODING_PCM_16BIT, lowShortBeep.getSound().length,
+                AudioTrack.MODE_STATIC);
+
         // ToDo: replace with beep configuration from settings
-        beepHandler.addBeep(10, lowLongBeep);
+        //beepHandler.addBeep(10, lowLongBeep);
         beepHandler.addBeep(5, lowShortBeep);
         beepHandler.addBeep(4, lowShortBeep);
         beepHandler.addBeep(3, lowShortBeep);
         beepHandler.addBeep(2, lowShortBeep);
         beepHandler.addBeep(1, lowShortBeep);
-        beepHandler.addBeep(0, highLongBeep);
+        //beepHandler.addBeep(0, highLongBeep);
 
         start = findViewById(R.id.btn_start);
         stop = findViewById(R.id.btn_stop);
@@ -97,7 +112,11 @@ public class TimerActivity extends AppCompatActivity {
                 // ToDo: fire beeps on integral-second intervals
                 BeepTone _sound = beepHandler.returnBeep(countdownRemain);
                 if (_sound != null) {
-                    PlayTone _playTone = new PlayTone(_sound);
+                    // ToDo: DEBUG ONLY
+                    audioTrack.write(lowShortBeep.getSound(), 0, lowShortBeep.getSound().length);
+                    Thread t = new Thread(new BeeperRunnable(audioTrack));
+                    t.start();
+//                    PlayTone _playTone = new PlayTone(_sound);
                 }
             }
 
@@ -221,4 +240,37 @@ public class TimerActivity extends AppCompatActivity {
     }
 
 
+}
+
+
+//class PlayTone {
+//
+//    PlayTone(BeepTone beepTone) {
+//
+//        // retrieve tone
+//        byte[] sound = beepTone.getSound();
+//        int sampleRate = beepTone.getSampleRate();
+//
+//        AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
+//                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
+//                AudioFormat.ENCODING_PCM_16BIT, sound.length,
+//                AudioTrack.MODE_STATIC);
+//
+//        audioTrack.write(sound, 0, sound.length);
+//        Thread t = new Thread(new BeeperRunnable(audioTrack));
+//        t.start();
+//    }
+//
+//}
+
+class BeeperRunnable implements Runnable {
+    private AudioTrack _audioTrack;
+
+    BeeperRunnable(AudioTrack _audioTrack) {
+        this._audioTrack = _audioTrack;
+    }
+
+    public void run() {
+        _audioTrack.play();
+    }
 }
