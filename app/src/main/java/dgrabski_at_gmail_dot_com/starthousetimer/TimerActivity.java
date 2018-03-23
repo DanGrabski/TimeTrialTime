@@ -73,6 +73,8 @@ public class TimerActivity extends AppCompatActivity {
         BeepTone lowShortBeep = new BeepTone(100,440);
         BeepTone lowLongBeep = new BeepTone(500, 440);
         BeepTone highLongBeep = new BeepTone(500, 880);
+        beepHandler = new BeepHandler();
+        
         // ToDo: replace with beep configuration from settings
         beepHandler.addBeep(10, lowLongBeep);
         beepHandler.addBeep(5, lowShortBeep);
