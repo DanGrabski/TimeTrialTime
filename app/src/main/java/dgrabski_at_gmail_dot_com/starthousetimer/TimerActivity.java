@@ -114,7 +114,7 @@ public class TimerActivity extends AppCompatActivity {
                 if (_sound != null) {
                     // ToDo: DEBUG ONLY
                     audioTrack.write(lowShortBeep.getSound(), 0, lowShortBeep.getSound().length);
-                    Thread t = new Thread(new BeeperRunnable(audioTrack));
+                    Thread t = new Thread(new BeeperRunnable(audioTrack, 100));
                     t.start();
 //                    PlayTone _playTone = new PlayTone(_sound);
                 }
@@ -242,35 +242,27 @@ public class TimerActivity extends AppCompatActivity {
 
 }
 
-
-//class PlayTone {
-//
-//    PlayTone(BeepTone beepTone) {
-//
-//        // retrieve tone
-//        byte[] sound = beepTone.getSound();
-//        int sampleRate = beepTone.getSampleRate();
-//
-//        AudioTrack audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-//                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
-//                AudioFormat.ENCODING_PCM_16BIT, sound.length,
-//                AudioTrack.MODE_STATIC);
-//
-//        audioTrack.write(sound, 0, sound.length);
-//        Thread t = new Thread(new BeeperRunnable(audioTrack));
-//        t.start();
-//    }
-//
-//}
-
+// turn this just into runnable?
 class BeeperRunnable implements Runnable {
     private AudioTrack _audioTrack;
+    private long _startTime;
+    int _runTime;
+    long _killTime;
 
-    BeeperRunnable(AudioTrack _audioTrack) {
+    BeeperRunnable(AudioTrack _audioTrack, int _runTime) {
         this._audioTrack = _audioTrack;
+        this._runTime = _runTime;
+        _startTime = SystemClock.uptimeMillis();
+        _killTime = _startTime + (long)_runTime;
     }
 
     public void run() {
         _audioTrack.play();
+        while (true) {
+            if (SystemClock.uptimeMillis() > _killTime) {
+                Thread.currentThread().interrupt();
+            }
+
+        }
     }
 }
