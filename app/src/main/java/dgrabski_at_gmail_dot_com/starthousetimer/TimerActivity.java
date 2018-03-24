@@ -299,6 +299,7 @@ class BeeperThread extends Thread {
         _audioTrack.pause();
         _audioTrack.flush();
         _isRunning = false;
+        interrupt();
     }
 }
 
@@ -312,10 +313,13 @@ class StopBeeperThread extends Thread {
     public void run() {
         // timer
         try {
-            Thread.currentThread().sleep(400);
+            sleep(400);
         } catch (InterruptedException e) {
             _beeper.stopBeeperThread();
-            Thread.currentThread().interrupt();
+            interrupt();
+        } finally {
+            _beeper.stopBeeperThread();
+            interrupt();
         }
     }
 }
