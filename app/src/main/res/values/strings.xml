@@ -8,6 +8,6 @@
     <string name="txt_btn_reset">RESET</string>
     <string name="txt_btn_lap">LAP</string>
     <string name="str_timedefault">00:00.000</string>
-    <string name="str_error_time_entry">Please enter a number of seconds between </string>
-    <string name="str_error_time_entry_2"> and </string>
+    <string name="str_error_time_entry">Countdown time must be between</string>
+    <string name="str_error_time_entry_2">and</string>
 </resources>

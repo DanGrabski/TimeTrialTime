@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         String startTime = countdownTime.getText().toString();
         try {
             startSeconds = Integer.parseInt(startTime);
-            if ((startSeconds < R.integer.time_min) || (startSeconds > R.integer.time_max)) {
+            if ((startSeconds < getResources().getInteger(R.integer.time_min)) || (startSeconds > getResources().getInteger(R.integer.time_max))) {
                 // create exception
                 throw new OutOfRangeException();
             } else {
