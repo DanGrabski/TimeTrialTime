@@ -80,10 +80,6 @@ public class TimerActivity extends AppCompatActivity {
         BeepTone lowLongBeep = new BeepTone(500, 440, sampleRate);
         BeepTone highLongBeep = new BeepTone(500, 880, sampleRate);
         beepHandler = new BeepHandler();
-//        audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
-//                sampleRate, AudioFormat.CHANNEL_OUT_MONO,
-//                AudioFormat.ENCODING_PCM_16BIT, sound.length,
-//                AudioTrack.MODE_STATIC);
         // ToDo: THIS IS DEBUG ONLY
         audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                 sampleRate, AudioFormat.CHANNEL_OUT_MONO,
@@ -91,13 +87,14 @@ public class TimerActivity extends AppCompatActivity {
                 AudioTrack.MODE_STATIC);
 
         // ToDo: replace with beep configuration from settings
-        //beepHandler.addBeep(10, lowLongBeep);
+        // ToDo: test beep at 0
+        beepHandler.addBeep(10, lowLongBeep);
         beepHandler.addBeep(5, lowShortBeep);
         beepHandler.addBeep(4, lowShortBeep);
         beepHandler.addBeep(3, lowShortBeep);
         beepHandler.addBeep(2, lowShortBeep);
         beepHandler.addBeep(1, lowShortBeep);
-        //beepHandler.addBeep(0, highLongBeep);
+        beepHandler.addBeep(0, highLongBeep);
 
         start = findViewById(R.id.btn_start);
         stop = findViewById(R.id.btn_stop);
@@ -112,18 +109,24 @@ public class TimerActivity extends AppCompatActivity {
                 // ToDo: fire beeps on integral-second intervals
                 BeepTone _sound = beepHandler.returnBeep(countdownRemain);
                 if (_sound != null) {
-                    // ToDo: DEBUG ONLY
-                    audioTrack.write(lowShortBeep.getSound(), 0, lowShortBeep.getSound().length);
+                    audioTrack.write(_sound.getSound(), 0, _sound.getSound().length);
                     BeeperThread t = new BeeperThread(audioTrack);
-                    StopBeeperThread tl = new StopBeeperThread(t);
+                    StopBeeperThread tl = new StopBeeperThread(t, _sound.getDuration());
                     t.start();
                     tl.start();
-//                    PlayTone _playTone = new PlayTone(_sound);
                 }
             }
 
             @Override
             public void onFinish() {
+                BeepTone _sound = beepHandler.returnBeep(0);
+                if (_sound != null) {
+                    audioTrack.write(_sound.getSound(), 0, _sound.getSound().length);
+                    BeeperThread t = new BeeperThread(audioTrack);
+                    StopBeeperThread tl = new StopBeeperThread(t, _sound.getDuration());
+                    t.start();
+                    tl.start();
+                }
                 countdownView.setText("0");
             }
         };
@@ -244,44 +247,9 @@ public class TimerActivity extends AppCompatActivity {
 
 }
 
-//class TimeLimitRunnable implements Runnable {
-//    Thread _beepThread;
-//    int _waitTimeMs;
-//    long _killTimeMs;
-//
-//    TimeLimitRunnable(Thread _beepThread, int _waitTimeMs) {
-//        this._beepThread = _beepThread;
-//        this._waitTimeMs = _waitTimeMs;
-//        _killTimeMs = SystemClock.uptimeMillis() + _waitTimeMs;
-//    }
-//
-//    public void run() {
-//        while (SystemClock.uptimeMillis() < _killTimeMs) {
-//            // just wait
-//        }
-//        _beepThread.interrupt();
-//        Thread.currentThread().interrupt();
-//    }
-//}
-
-//// turn this just into runnable?
-//class BeeperRunnable implements Runnable {
-//    private AudioTrack _audioTrack;
-//
-//    BeeperRunnable(AudioTrack _audioTrack) {
-//        this._audioTrack = _audioTrack;
-//    }
-//
-//    public void run() {
-//        _audioTrack.play();
-////        }
-//    }
-//}
-
 // so this probably isn't the best way to do this, but it
 // means practice working with threads
 class BeeperThread extends Thread {
-    private boolean _isRunning = true;
     private AudioTrack _audioTrack;
 
     BeeperThread(AudioTrack _audioTrack) {
@@ -290,33 +258,30 @@ class BeeperThread extends Thread {
 
     public void run() {
         _audioTrack.play();
-        while (_isRunning) {
-            // just let it play
-        }
     }
 
-    public void stopBeeperThread() {
+    void stopBeeperThread() {
         _audioTrack.pause();
         _audioTrack.flush();
-        _isRunning = false;
         interrupt();
     }
 }
 
 class StopBeeperThread extends Thread {
     private BeeperThread _beeper;
+    private int _duration;
 
-    StopBeeperThread(BeeperThread _beeper) {
+    StopBeeperThread(BeeperThread _beeper, int _duration) {
         this._beeper = _beeper;
+        this._duration = _duration;
     }
 
     public void run() {
         // timer
         try {
-            sleep(400);
+            // done: put in actual time for sound
+            sleep(_duration);
         } catch (InterruptedException e) {
-            _beeper.stopBeeperThread();
-            interrupt();
         } finally {
             _beeper.stopBeeperThread();
             interrupt();

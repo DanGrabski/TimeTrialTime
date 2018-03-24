@@ -1,18 +1,16 @@
 package dgrabski_at_gmail_dot_com.starthousetimer;
 
-import java.util.Arrays;
-
 /**
  * Created by Dan on 3/22/2018.
  */
 
 class BeepTone {
 
-    //private int sampleRate = 8000;
     private byte[] sound;
-
+    private int duration;   // duration in ms
 
     BeepTone(int duration, int frequency, int sampleRate) {
+        this.duration = duration;
         int numSamples = duration * sampleRate;
         double[] sample = new double[numSamples];
         sound = new byte[2*numSamples];
@@ -37,8 +35,10 @@ class BeepTone {
     byte[] getSound() {
         return sound;
     }
-//    int getSampleRate() {
-//        return sampleRate;
-//    }
+
+    int getDuration() {
+        return duration;
+    }
+
 
 }
