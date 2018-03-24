@@ -114,8 +114,10 @@ public class TimerActivity extends AppCompatActivity {
                 if (_sound != null) {
                     // ToDo: DEBUG ONLY
                     audioTrack.write(lowShortBeep.getSound(), 0, lowShortBeep.getSound().length);
-                    Thread t = new Thread(new BeeperRunnable(audioTrack, 100));
+                    Thread t = new Thread(new BeeperRunnable(audioTrack));
+                    Thread tl = new Thread(new TimeLimitRunnable(t, 100));
                     t.start();
+                    tl.start();
 //                    PlayTone _playTone = new PlayTone(_sound);
                 }
             }
@@ -242,27 +244,51 @@ public class TimerActivity extends AppCompatActivity {
 
 }
 
+class TimeLimitRunnable implements Runnable {
+    Thread _beepThread;
+    int _waitTimeMs;
+    long _killTimeMs;
+
+    TimeLimitRunnable(Thread _beepThread, int _waitTimeMs) {
+        this._beepThread = _beepThread;
+        this._waitTimeMs = _waitTimeMs;
+        _killTimeMs = SystemClock.uptimeMillis() + _waitTimeMs;
+    }
+
+    public void run() {
+        while (SystemClock.uptimeMillis() < _killTimeMs) {
+            // just wait
+        }
+        _beepThread.interrupt();
+        Thread.currentThread().interrupt();
+    }
+}
+
 // turn this just into runnable?
 class BeeperRunnable implements Runnable {
     private AudioTrack _audioTrack;
-    private long _startTime;
-    int _runTime;
-    long _killTime;
+//    private long _startTime;
+//    int _runTime;
+//    long _killTime;
 
-    BeeperRunnable(AudioTrack _audioTrack, int _runTime) {
+    BeeperRunnable(AudioTrack _audioTrack) {
         this._audioTrack = _audioTrack;
-        this._runTime = _runTime;
-        _startTime = SystemClock.uptimeMillis();
-        _killTime = _startTime + (long)_runTime;
+//        this._runTime = _runTime;
+//        this._killTime = _killTime;
+//        _startTime = SystemClock.uptimeMillis();
+//        _killTime = _startTime + (long)_runTime;
     }
 
     public void run() {
         _audioTrack.play();
-        while (true) {
-            if (SystemClock.uptimeMillis() > _killTime) {
-                Thread.currentThread().interrupt();
-            }
-
-        }
+//        _audioTrack.get
+//        while (true) {
+//            if (SystemClock.uptimeMillis() > _killTime) {
+//                _audioTrack.pause();
+//                _audioTrack.flush();
+//                Thread.currentThread().interrupt();
+//            }
+//
+//        }
     }
 }
