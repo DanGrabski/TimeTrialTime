@@ -114,8 +114,8 @@ public class TimerActivity extends AppCompatActivity {
                 if (_sound != null) {
                     // ToDo: DEBUG ONLY
                     audioTrack.write(lowShortBeep.getSound(), 0, lowShortBeep.getSound().length);
-                    Thread t = new Thread(new BeeperRunnable(audioTrack));
-                    Thread tl = new Thread(new TimeLimitRunnable(t, 100));
+                    BeeperThread t = new BeeperThread(audioTrack);
+                    StopBeeperThread tl = new StopBeeperThread(t);
                     t.start();
                     tl.start();
 //                    PlayTone _playTone = new PlayTone(_sound);
@@ -244,51 +244,78 @@ public class TimerActivity extends AppCompatActivity {
 
 }
 
-class TimeLimitRunnable implements Runnable {
-    Thread _beepThread;
-    int _waitTimeMs;
-    long _killTimeMs;
+//class TimeLimitRunnable implements Runnable {
+//    Thread _beepThread;
+//    int _waitTimeMs;
+//    long _killTimeMs;
+//
+//    TimeLimitRunnable(Thread _beepThread, int _waitTimeMs) {
+//        this._beepThread = _beepThread;
+//        this._waitTimeMs = _waitTimeMs;
+//        _killTimeMs = SystemClock.uptimeMillis() + _waitTimeMs;
+//    }
+//
+//    public void run() {
+//        while (SystemClock.uptimeMillis() < _killTimeMs) {
+//            // just wait
+//        }
+//        _beepThread.interrupt();
+//        Thread.currentThread().interrupt();
+//    }
+//}
 
-    TimeLimitRunnable(Thread _beepThread, int _waitTimeMs) {
-        this._beepThread = _beepThread;
-        this._waitTimeMs = _waitTimeMs;
-        _killTimeMs = SystemClock.uptimeMillis() + _waitTimeMs;
-    }
+//// turn this just into runnable?
+//class BeeperRunnable implements Runnable {
+//    private AudioTrack _audioTrack;
+//
+//    BeeperRunnable(AudioTrack _audioTrack) {
+//        this._audioTrack = _audioTrack;
+//    }
+//
+//    public void run() {
+//        _audioTrack.play();
+////        }
+//    }
+//}
 
-    public void run() {
-        while (SystemClock.uptimeMillis() < _killTimeMs) {
-            // just wait
-        }
-        _beepThread.interrupt();
-        Thread.currentThread().interrupt();
-    }
-}
-
-// turn this just into runnable?
-class BeeperRunnable implements Runnable {
+// so this probably isn't the best way to do this, but it
+// means practice working with threads
+class BeeperThread extends Thread {
+    private boolean _isRunning = true;
     private AudioTrack _audioTrack;
-//    private long _startTime;
-//    int _runTime;
-//    long _killTime;
 
-    BeeperRunnable(AudioTrack _audioTrack) {
+    BeeperThread(AudioTrack _audioTrack) {
         this._audioTrack = _audioTrack;
-//        this._runTime = _runTime;
-//        this._killTime = _killTime;
-//        _startTime = SystemClock.uptimeMillis();
-//        _killTime = _startTime + (long)_runTime;
     }
 
     public void run() {
         _audioTrack.play();
-//        _audioTrack.get
-//        while (true) {
-//            if (SystemClock.uptimeMillis() > _killTime) {
-//                _audioTrack.pause();
-//                _audioTrack.flush();
-//                Thread.currentThread().interrupt();
-//            }
-//
-//        }
+        while (_isRunning) {
+            // just let it play
+        }
+    }
+
+    public void stopBeeperThread() {
+        _audioTrack.pause();
+        _audioTrack.flush();
+        _isRunning = false;
+    }
+}
+
+class StopBeeperThread extends Thread {
+    private BeeperThread _beeper;
+
+    StopBeeperThread(BeeperThread _beeper) {
+        this._beeper = _beeper;
+    }
+
+    public void run() {
+        // timer
+        try {
+            Thread.currentThread().sleep(400);
+        } catch (InterruptedException e) {
+            _beeper.stopBeeperThread();
+            Thread.currentThread().interrupt();
+        }
     }
 }
