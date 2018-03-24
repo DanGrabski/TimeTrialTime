@@ -34,9 +34,10 @@ public class TimerActivity extends AppCompatActivity {
     // done v0.02: Add visual countdown (display of time remaining)
     // done v0.02: round (up) countdown time remaining to nearest second
     // ToDo: Add red light/green light to countdown
-    // ToDo: Add beeps to countdown timer
+    // done v0.04: Add beeps to countdown timer
     // ToDo: add different light patterns
     // ToDo: pass textview object to function to adjust colors instead of the current way
+    // ToDo: clean up lap display (lap, cumulative, lap number)
 
     int countdownTime;
     int countdownRemain;

@@ -1,5 +1,6 @@
 package dgrabski_at_gmail_dot_com.starthousetimer;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.os.Handler;
 import android.widget.EditText;
+import android.app.AlertDialog;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -16,14 +18,14 @@ public class MainActivity extends AppCompatActivity {
     // done v0.01: add entry for countdown time
     // done v0.02: pass countdown time to TimerActivity
     // ToDo: come up with settings
-    // ToDo: complete timerSetup.setOnClickListener - do we need additional info?
+    // done: complete timerSetup.setOnClickListener - do we need additional info?
     // done v0.02: clean up all old buttons and references
     // ToDo: add entry for light pattern selection
     // done v0.03: lock to portrait mode
     // ToDo: create user error for invalid entry on countdown time
 
     public static final String START_SECONDS = "dgrabski_at_gmail_dot_com.STARTSECONDS";
-    public static final int MAX_COUNTDOWN = 60;
+    public static final int MAX_COUNTDOWN = R.integer.time_max;
 
     Handler handler;
     Button timerSetup;
@@ -55,24 +57,47 @@ public class MainActivity extends AppCompatActivity {
         // starting with just the countdown time
         // done v0.02: make sure we're passing countdown time correctly
         // done v0.02: error checking on input_startSeconds - could be blank, which crashes things
-        Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
+//        Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
+//        EditText countdownTime = findViewById(R.id.input_startSeconds);        // entry for time on countdown
+//        String startTime = countdownTime.getText().toString();
+//        try {
+//            startSeconds = Integer.parseInt(startTime);
+//            // ok so not the best way of handling out of range
+//            // ToDo: handle out of range better instead of quietly ignoring
+//            startSeconds = (startSeconds < 0) || (startSeconds > MAX_COUNTDOWN) ? 0 : startSeconds;
+//        }
+//        catch (NumberFormatException e) {
+//
+//            startSeconds = 0;
+//        }
+//        finally {
+//            intent.putExtra(START_SECONDS, startSeconds);
+//        }
+//        startActivity(intent);
         EditText countdownTime = findViewById(R.id.input_startSeconds);        // entry for time on countdown
         String startTime = countdownTime.getText().toString();
         try {
             startSeconds = Integer.parseInt(startTime);
-            // ok so not the best way of handling out of range
-            // ToDo: handle out of range better instead of quietly ignoring
-            startSeconds = (startSeconds < 0) || (startSeconds > MAX_COUNTDOWN) ? 0 : startSeconds;
+            if ((startSeconds < R.integer.time_min) || (startSeconds > R.integer.time_max)) {
+                // create exception
+                throw new OutOfRangeException();
+            } else {
+                Intent intent = new Intent(this, TimerActivity.class); // Display Me... -> new activity name
+                intent.putExtra(START_SECONDS, startSeconds);
+                startActivity(intent);
+            }
+        } catch (NumberFormatException | OutOfRangeException e ) {
+            TimeEntryPopup _timePopup = new TimeEntryPopup();
+            FragmentManager _fm = getFragmentManager();
+            _timePopup.show(_fm, "timeEntryPopup");
         }
-        catch (NumberFormatException e) {
-            startSeconds = 0;
-        }
-        finally {
-            intent.putExtra(START_SECONDS, startSeconds);
-        }
-        startActivity(intent);
+
     }
 
+}
 
-
+class OutOfRangeException extends Exception {
+    public OutOfRangeException() {
+        super();
+    }
 }
