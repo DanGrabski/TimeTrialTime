@@ -32,8 +32,6 @@ public class TimeEntryPopup extends DialogFragment {
         _errorString += _r.getInteger(R.integer.time_max);
 
         builder.setMessage(_errorString);
-        //builder.setMessage(R.string.str_error_time_entry + String.valueOf(getResources().getInteger(R.integer.time_min)) +
-        //        R.string.str_error_time_entry_2 + String.valueOf(getResources().getInteger(R.integer.time_max)));
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
             }
